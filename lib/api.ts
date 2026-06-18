@@ -17,8 +17,32 @@ export type PortfolioSummary = {
   total_past_due: number | null;
 };
 
+export type BuildingStats = {
+  property_id: string;
+  name: string;
+  address: string;
+  units: number;
+  occupied_units: number;
+  vacant_units: number;
+  occupancy_rate: number;
+  active_tenants: number;
+  open_work_orders: number;
+  gross_monthly_rent: number;
+  total_past_due: number;
+};
+
 export async function fetchPortfolioSummary(): Promise<PortfolioSummary> {
   const res = await fetch(`${API_BASE}/api/portfolio/summary`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`API ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
+
+export async function fetchBuildings(): Promise<BuildingStats[]> {
+  const res = await fetch(`${API_BASE}/api/portfolio/buildings`, {
     cache: "no-store",
   });
   if (!res.ok) {
