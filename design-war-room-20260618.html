@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design War Room — MacREI Dashboard</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:860px;margin:0 auto;padding:40px 24px;color:#1a1a2e;line-height:1.6}
+h1{font-size:26px;margin-bottom:4px}.meta{color:#64748b;font-size:13px;margin-bottom:24px}
+h2{font-size:19px;margin:28px 0 10px;border-bottom:2px solid #e2e8f0;padding-bottom:6px}
+.verdict{background:#0f172a;color:#f1f5f9;border-radius:12px;padding:22px;margin:20px 0}
+.verdict h2{color:#38bdf8;border:0;margin-top:0}.verdict p{color:#e2e8f0}
+.one{background:#059669;color:#fff;border-radius:12px;padding:18px 22px;margin:20px 0;font-weight:600}
+.agree{background:#f0fdf4;border-left:4px solid #22c55e;padding:12px 18px;border-radius:0 8px 8px 0;margin:8px 0}
+.clash{background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 18px;border-radius:0 8px 8px 0;margin:8px 0}
+.blind{background:#fef2f2;border-left:4px solid #ef4444;padding:12px 18px;border-radius:0 8px 8px 0;margin:8px 0}
+details{border:1px solid #e2e8f0;border-radius:8px;margin:8px 0;padding:0}summary{padding:12px 16px;cursor:pointer;font-weight:600;background:#f8fafc}
+details div{padding:14px 16px;font-size:14px}
+li{margin-bottom:6px}
+</style></head><body>
+<h1>Design War Room</h1>
+<p class="meta">MacREI Portfolio Dashboard → Institutional Grade · June 18 2026 · 5 advisors + peer review + chairman</p>
+
+<div class="verdict"><h2>Verdict</h2>
+<p>Build the <strong>time dimension first</strong> (monthly Income/Expense/NOI trends + KPI sparklines), then <strong>per-building drill-down</strong>, then <strong>trust signals</strong> (last-synced, source, period-over-period deltas). Visual polish rides along — it is not the lever. Keep dark, one accent color, kill duplicate KPIs, demote the donut.</p></div>
+
+<div class="one">THE ONE THING FIRST: Add the time axis — a monthly Income / Expense / NOI trend chart (the GL data already has dates) plus sparklines on the KPI cards. Every advisor independently named the missing time dimension as the #1 gap.</div>
+
+<h2>Where the council agrees</h2>
+<div class="agree"><strong>No time dimension = #1 gap (unanimous).</strong> Snapshots are reporting; trends are analytics.</div>
+<div class="agree"><strong>Drill-down required.</strong> Click a building → unit detail, lease expirations, rent vs market, WO aging, that asset's GL trend.</div>
+<div class="agree"><strong>Sparklines in KPI cards</strong> · <strong>keep dark + one signal accent</strong> · faint grid, tabular numbers, conditional formatting.</div>
+<div class="agree"><strong>Lease expiration view (30/60/90)</strong> — the only forward-looking view · <strong>delinquency aging by building</strong>.</div>
+<div class="agree"><strong>Trust = audit trail:</strong> source attribution, "last synced" timestamp, period-over-period deltas on every figure.</div>
+
+<h2>Where the council clashes</h2>
+<div class="clash"><strong>IA:</strong> multi-view sidebar app + drill-down pages (4 advisors) vs. keep one scrolling page + slide-out modals at this scale (First Principles). Chairman: hybrid — keep tight overview, add per-building drill-down route, light nav grows with new views.</div>
+<div class="clash"><strong>Sequencing:</strong> polish/ship-fast (Executor) vs. fix data model + context first (Contrarian). Peer review sided with data-first.</div>
+
+<h2>Blind spots peer review caught</h2>
+<div class="blind"><strong>Verify suspect numbers</strong> — Past Due ≈ a full month's rent; 0 work orders. (Both explained: WOs were all on off-boarded "10th"; past due is test-site cruft. Make numbers self-explaining so they pass a smell test.)</div>
+<div class="blind"><strong>Role-based views / governance</strong> — LP vs operator exposure + permissions + lineage.</div>
+<div class="blind"><strong>Mobile/responsive</strong> — does dark+dense survive a phone viewport?</div>
+
+<h2>Advisors</h2>
+<details><summary>Contrarian — "vanity dashboard, not a decision engine"</summary><div>No time dimension is the biggest gap, not color. One page signals "demo." KPI cards without variance/benchmark/period-delta are decoration — every number needs a denominator or direction arrow. Fix the data model before polish. Missing: lease expiration waterfall, delinquency aging by building, NOI per unit. LP trust = audit trail on every figure.</div></details>
+<details><summary>First Principles — "decision confidence: operator triage + LP proof"</summary><div>Biggest gap: no time dimension. KEEP one scrolling page at 118-unit scale; 3 progressive-disclosure layers (pulse → sortable building grid → slide-out drill-down; modal keeps context). Sparklines in KPI cards. Dark + ONE accent as signal. Highest-leverage add: lease expiration roll. LP trust: one clean NOI trend line auditable to source.</div></details>
+<details><summary>Expansionist — "no time axis; build the moat"</summary><div>Two tiers Portfolio+Asset, drill to unit mix/rent vs market/lease exp/WO aging/GL trend. Sparklines everywhere, conditional formatting, time-series over static bars. Unbuilt views: lease expiration heatmap (month×building), rent-to-market gap per unit, WO cost-per-unit trend, NOI waterfall. Moat: white-label SaaS for 50–500-unit operators + audit lineage + PDF export. 10x: benchmarking vs portfolio avg → anonymized cross-operator network effect.</div></details>
+<details><summary>Outsider — "first look, no jargon"</summary><div>Gross Rent + Past Due shown twice — pick one. Past Due ≈ one month's rent, unexplained. One scroll buries things — give tabs/anchors. Want to click building rows, can't. Donut is the biggest element for one number — replace with tight KPI grid. Missing: lease expiration timeline, delinquency aging, vacancy days/unit, trend lines. Wouldn't trust it: 0 work orders for 118 units fails the smell test.</div></details>
+<details><summary>Executor — "do-it-this-week"</summary><div>Ship: /financials/trend endpoint → Recharts ComposedChart (income/expense bars + NOI line). Multi-view via Next App Router (/dashboard + /buildings/[id]) + fixed left sidebar. @tanstack/react-table with sparkline columns. Palette: blue anchor + grays + one accent red; styled tooltips; faint grid; tabular-nums. Order: trend → sidebar → drill-down → table → date filter → lease expiration. Trust: "Last synced: N min ago" + pulsing dot.</div></details>
+
+<p class="meta" style="margin-top:32px">Generated by LLM Council · June 2026</p>
+</body></html>
