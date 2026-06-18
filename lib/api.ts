@@ -50,3 +50,33 @@ export async function fetchBuildings(): Promise<BuildingStats[]> {
   }
   return res.json();
 }
+
+export type BuildingFinancials = {
+  property_id: string;
+  name: string;
+  income: number;
+  operating_expense: number;
+  noi: number;
+};
+
+export type PortfolioFinancials = {
+  window_months: number;
+  date_from: string;
+  date_to: string;
+  total_income: number;
+  total_expense: number;
+  total_noi: number;
+  expense_by_category: Record<string, number>;
+  buildings: BuildingFinancials[];
+};
+
+// Server-side fetch (used by the Next route handler) — keeps creds/CORS server-side.
+export async function fetchFinancials(months = 12): Promise<PortfolioFinancials> {
+  const res = await fetch(`${API_BASE}/api/portfolio/financials?months=${months}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`API ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
