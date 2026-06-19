@@ -6,6 +6,7 @@ import {
 } from "@/lib/api";
 import { OccupancyByBuilding, RentByBuilding } from "./components/BuildingCharts";
 import { FinancialsSection } from "./components/FinancialsSection";
+import { TrendSection } from "./components/TrendSection";
 
 export const dynamic = "force-dynamic";
 
@@ -209,6 +210,8 @@ export default async function Home() {
               </div>
             </>
           ) : null}
+
+          <TrendSection months={12} />
 
           <FinancialsSection months={12} />
         </>

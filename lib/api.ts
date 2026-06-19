@@ -80,3 +80,31 @@ export async function fetchFinancials(months = 12): Promise<PortfolioFinancials>
   }
   return res.json();
 }
+
+export type MonthlyFinancials = {
+  month: string; // "YYYY-MM"
+  income: number;
+  operating_expense: number;
+  noi: number;
+};
+
+export type PortfolioFinancialsTrend = {
+  window_months: number;
+  date_from: string;
+  date_to: string;
+  months: MonthlyFinancials[];
+};
+
+// Server-side fetch for the monthly Income/Expense/NOI trend (the time dimension).
+export async function fetchFinancialsTrend(
+  months = 12,
+): Promise<PortfolioFinancialsTrend> {
+  const res = await fetch(
+    `${API_BASE}/api/portfolio/financials/trend?months=${months}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    throw new Error(`API ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
