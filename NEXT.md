@@ -1,9 +1,14 @@
 # NEXT — macrei-dashboard-web (frontend handoff)
 
-**Updated:** 2026-06-22 · branch `main`. **1 commit ahead of origin — NOT pushed** (the new
-Trend section defaults to 12 months, which hangs on the throttled test-site backend; see the
-backend `NEXT.md` "GL throttle" note before deploying).
+**Updated:** 2026-06-22 · branch `main`. **2 commits ahead of origin — NOT pushed.** The
+backend GL-throttle blocker is now resolved in code (financials are served from a Postgres
+cache); deploy is gated only on provisioning Postgres + running the first sync — see the
+backend `NEXT.md` "GL cache built" block.
 Pairs with the backend handoff in `autonomous-pm/docs/NEXT.md` (read both).
+
+## ▶ 2026-06-22b — "Last synced" surfaced
+- `synced_at` added to `PortfolioFinancials`/`PortfolioFinancialsTrend` types; the Financial
+  Trend header now shows `Synced <time>` (war-room "last synced" ask). No other UI change.
 
 ## ▶ 2026-06-22 — Financial Trend section added (time dimension)
 - `app/components/TrendSection.tsx` — lazy client section, Recharts `ComposedChart`
