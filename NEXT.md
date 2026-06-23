@@ -1,7 +1,20 @@
 # NEXT — macrei-dashboard-web (frontend handoff)
 
-**Updated:** 2026-06-18 · branch `main`, synced with origin.
+**Updated:** 2026-06-22 · branch `main`. **1 commit ahead of origin — NOT pushed** (the new
+Trend section defaults to 12 months, which hangs on the throttled test-site backend; see the
+backend `NEXT.md` "GL throttle" note before deploying).
 Pairs with the backend handoff in `autonomous-pm/docs/NEXT.md` (read both).
+
+## ▶ 2026-06-22 — Financial Trend section added (time dimension)
+- `app/components/TrendSection.tsx` — lazy client section, Recharts `ComposedChart`
+  (income + expense bars, NOI line) + period-over-period NOI delta chip. Mounted in
+  `app/page.tsx` above `<FinancialsSection>`.
+- `app/api/financials/trend/route.ts` — same-origin proxy → backend
+  `/api/portfolio/financials/trend?months=N`. `fetchFinancialsTrend` + types in `lib/api.ts`.
+- `npm run build` passes. Renders correct shape against the live backend; recent months read
+  $0 (sparse test-site GL). **Do not deploy until the backend GL throttle is resolved** (12-mo
+  default would leave the section on "Loading monthly ledger…").
+- Remaining war-room build order is unchanged below (drill-down `/buildings/[id]` next).
 
 ## What this is
 Next.js 15.5 (App Router) + React 19 + Recharts 3 analytics dashboard for MacREI's
