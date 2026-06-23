@@ -68,6 +68,7 @@ export type PortfolioFinancials = {
   total_noi: number;
   expense_by_category: Record<string, number>;
   buildings: BuildingFinancials[];
+  synced_at: string | null;
 };
 
 // Server-side fetch (used by the Next route handler) — keeps creds/CORS server-side.
@@ -93,6 +94,7 @@ export type PortfolioFinancialsTrend = {
   date_from: string;
   date_to: string;
   months: MonthlyFinancials[];
+  synced_at: string | null;
 };
 
 // Server-side fetch for the monthly Income/Expense/NOI trend (the time dimension).

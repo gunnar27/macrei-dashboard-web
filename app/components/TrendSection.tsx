@@ -37,6 +37,19 @@ function monthLabel(m: string): string {
   return `${name} ’${y.slice(2)}`;
 }
 
+// ISO timestamp -> "Synced Jun 22, 2:14 PM" (or null when never synced).
+function syncedLabel(iso: string | null): string {
+  if (!iso) return "Not yet synced";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "Not yet synced";
+  return `Synced ${d.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  })}`;
+}
+
 function Tip({
   active,
   payload,
@@ -130,7 +143,7 @@ export function TrendSection({ months = 12 }: { months?: number }) {
         <h2>Financial Trend</h2>
         <span>
           {data
-            ? `Monthly · ${data.date_from} → ${data.date_to}`
+            ? `Monthly · ${data.date_from} → ${data.date_to} · ${syncedLabel(data.synced_at)}`
             : `Trailing ${months} months`}
         </span>
       </div>
