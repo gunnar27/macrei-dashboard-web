@@ -400,3 +400,83 @@ select.ctrl-input:focus, input.ctrl-input:focus { outline: none; border-color: #
   .nav-section, .nav-foot { display: none; }
   .nav-spacer { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   Premium component layer — owner-grade detail UI
+   ══════════════════════════════════════════════════════════ */
+
+/* KPI stat tiles ---------------------------------------------------------- */
+.stat-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.stat {
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px;
+}
+.stat::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent, var(--blue)); opacity: 0.85; }
+.stat.green { --accent: var(--green); } .stat.amber { --accent: var(--amber); }
+.stat.red { --accent: var(--red); } .stat.blue { --accent: var(--blue); } .stat.violet { --accent: var(--violet); }
+.stat .k { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-faint); font-weight: 600; }
+.stat .v { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12.5px; color: var(--text-dim); margin-top: 4px; }
+.stat .delta { font-size: 12px; font-weight: 600; margin-top: 4px; }
+.delta.up { color: var(--green); } .delta.down { color: var(--red); }
+
+/* Stacked aging / proportion bar ----------------------------------------- */
+.bar-stack { display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.05); }
+.bar-stack > span { display: block; height: 100%; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--text-dim); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+/* Occupancy meter --------------------------------------------------------- */
+.meter { height: 8px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.meter > span { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--green), #6ee7b7); }
+
+/* Badges ------------------------------------------------------------------ */
+.badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.01em; }
+.badge.occupied { background: var(--green-soft); color: var(--green); }
+.badge.vacant { background: var(--red-soft); color: var(--red); }
+.badge.holdover { background: var(--amber-soft); color: var(--amber); }
+.badge.mtm { background: var(--blue-soft); color: var(--blue); }
+.badge.nonrev { background: rgba(255,255,255,0.05); color: var(--text-faint); }
+.badge.urgent { background: var(--red-soft); color: var(--red); }
+.badge.normal { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+
+/* Money helpers ----------------------------------------------------------- */
+.num { font-variant-numeric: tabular-nums; }
+td.r, th.r { text-align: right; }
+.pos { color: var(--green); } .neg { color: var(--red); } .warn-c { color: var(--amber); } .dim { color: var(--text-faint); }
+
+/* Refined data table ------------------------------------------------------ */
+.tbl-wrap { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, var(--panel-2), var(--panel)); }
+.tbl-scroll { overflow-x: auto; }
+table.rt { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.rt thead th {
+  position: sticky; top: 0; z-index: 1; text-align: left;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-faint); font-weight: 600; padding: 12px 14px;
+  background: var(--panel-2); border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+table.rt tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); white-space: nowrap; }
+table.rt tbody tr:last-child td { border-bottom: 0; }
+table.rt tbody tr:hover td { background: rgba(255,255,255,0.025); }
+table.rt tfoot td { padding: 12px 14px; font-weight: 700; border-top: 1px solid var(--border-strong); background: rgba(255,255,255,0.015); }
+
+/* Waterfall / bridge ------------------------------------------------------ */
+.bridge { display: flex; flex-direction: column; gap: 2px; }
+.bridge-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 8px; font-size: 14px; }
+.bridge-row.total { background: rgba(255,255,255,0.03); font-weight: 700; }
+.bridge-row .lbl { color: var(--text-dim); display: flex; align-items: center; gap: 9px; }
+.bridge-row .amt { font-variant-numeric: tabular-nums; font-weight: 600; }
+.bridge-row .bartrack { flex: 1; margin: 0 16px; height: 6px; border-radius: 4px; background: rgba(255,255,255,0.05); overflow: hidden; }
+.bridge-row .bartrack > span { display: block; height: 100%; border-radius: 4px; }
+
+/* Tabs -------------------------------------------------------------------- */
+.tabs { display: inline-flex; gap: 2px; border: 1px solid var(--border-strong); border-radius: 10px; padding: 3px; background: var(--panel); margin: 4px 0 18px; }
+.tabs a { padding: 7px 15px; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: var(--text-dim); text-decoration: none; }
+.tabs a:hover { color: var(--text); }
+.tabs a.on { background: rgba(96,165,250,0.16); color: #cfe0ff; }
+
+/* Section card ------------------------------------------------------------ */
+.panel { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+.panel-title { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.panel-sub { font-size: 12.5px; color: var(--text-faint); margin: 2px 0 14px; }
