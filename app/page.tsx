@@ -4,6 +4,7 @@ import {
   type BuildingStats,
   type PortfolioSummary,
 } from "@/lib/api";
+import Link from "next/link";
 import { OccupancyByBuilding, RentByBuilding } from "./components/BuildingCharts";
 import { FinancialsSection } from "./components/FinancialsSection";
 import { TrendSection } from "./components/TrendSection";
@@ -193,8 +194,10 @@ export default async function Home() {
                     {buildings.map((b) => (
                       <tr key={b.property_id}>
                         <td>
-                          <div className="bldg-name">{b.name}</div>
-                          {b.address ? <div className="bldg-addr">{b.address}</div> : null}
+                          <Link href={`/buildings/${b.property_id}`} className="bldg-link">
+                            <div className="bldg-name">{b.name}</div>
+                            {b.address ? <div className="bldg-addr">{b.address}</div> : null}
+                          </Link>
                         </td>
                         <td>{b.units}</td>
                         <td><span className={`pill ${occPill(b.occupancy_rate)}`}>{b.occupancy_rate}%</span></td>

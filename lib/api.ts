@@ -110,3 +110,33 @@ export async function fetchFinancialsTrend(
   }
   return res.json();
 }
+
+export type BuildingFinancialsDetail = {
+  property_id: string;
+  name: string;
+  found: boolean;
+  window_months: number;
+  date_from: string;
+  date_to: string;
+  total_income: number;
+  total_expense: number;
+  total_noi: number;
+  expense_by_category: Record<string, number>;
+  months: MonthlyFinancials[];
+  synced_at: string | null;
+};
+
+// One building's financial drill-down (totals + expense categories + monthly trend).
+export async function fetchBuildingFinancials(
+  propertyId: string,
+  months = 12,
+): Promise<BuildingFinancialsDetail> {
+  const res = await fetch(
+    `${API_BASE}/api/portfolio/buildings/${encodeURIComponent(propertyId)}/financials?months=${months}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    throw new Error(`API ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
