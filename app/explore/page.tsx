@@ -1,4 +1,5 @@
 import { fetchBuildings, fetchGlQuery } from "@/lib/api";
+import { AskBox } from "../components/AskBox";
 import { ExplorePanel } from "../components/ExplorePanel";
 
 export const dynamic = "force-dynamic";
@@ -27,6 +28,8 @@ export default async function ExplorePage() {
         </div>
         <div className="status-pill"><span className="dot" />Live · Read-only</div>
       </div>
+
+      <AskBox />
 
       {error ? (
         <div className="notice"><div><div className="notice-title">Couldn’t load Explore</div><div className="notice-body">{error}</div></div></div>

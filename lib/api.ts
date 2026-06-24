@@ -329,3 +329,20 @@ export async function fetchWorkOrders(propertyId?: string): Promise<WorkOrders> 
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
+
+// ── Natural-language Ask ────────────────────────────────────────────────────
+export type AskResult = {
+  question: string;
+  answer: string;
+  kind: string;
+  property_id: string | null;
+  property_name: string | null;
+  category: string | null;
+  months: number;
+  query: GlQuery;
+};
+export async function fetchAsk(q: string): Promise<AskResult> {
+  const res = await fetch(`${API_BASE}/api/portfolio/ask?q=${encodeURIComponent(q)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+  return res.json();
+}
