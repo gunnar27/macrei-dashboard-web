@@ -140,3 +140,51 @@ export async function fetchBuildingFinancials(
   }
   return res.json();
 }
+
+export type MonthlyAmount = { month: string; amount: number };
+
+export type GlQuery = {
+  kind: string; // income | expense | noi
+  property_id: string | null;
+  property_name: string | null;
+  category: string | null;
+  date_from: string;
+  date_to: string;
+  total: number;
+  monthly: MonthlyAmount[];
+  by_category: Record<string, number>;
+  synced_at: string | null;
+};
+
+export type GlQueryParams = {
+  kind?: string;
+  property_id?: string;
+  category?: string;
+  months?: number;
+  date_from?: string;
+  date_to?: string;
+};
+
+function queryString(p: GlQueryParams): string {
+  const q = new URLSearchParams();
+  if (p.kind) q.set("kind", p.kind);
+  if (p.property_id) q.set("property_id", p.property_id);
+  if (p.category) q.set("category", p.category);
+  if (p.months) q.set("months", String(p.months));
+  if (p.date_from) q.set("date_from", p.date_from);
+  if (p.date_to) q.set("date_to", p.date_to);
+  return q.toString();
+}
+
+// Flexible GL query — the engine behind the Explore page.
+export async function fetchGlQuery(p: GlQueryParams): Promise<GlQuery> {
+  const res = await fetch(`${API_BASE}/api/portfolio/query?${queryString(p)}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`API ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
+
+export { queryString as glQueryString };

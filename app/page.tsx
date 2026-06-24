@@ -89,13 +89,10 @@ export default async function Home() {
 
   return (
     <main className="wrap">
-      <div className="topbar">
-        <div className="brand">
-          <div className="brand-mark">{I.logo}</div>
-          <div>
-            <div className="brand-name">MacREI Properties</div>
-            <div className="brand-sub">Portfolio Analytics</div>
-          </div>
+      <div className="page-head">
+        <div>
+          <h1 className="page-title">Portfolio Overview</h1>
+          <div className="page-subtitle">MacREI Properties · Los Angeles County</div>
         </div>
         <div className="status-pill"><span className="dot" />Live · Read-only</div>
       </div>
