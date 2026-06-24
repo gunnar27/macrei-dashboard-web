@@ -494,3 +494,17 @@ table.rt tfoot td { padding: 12px 14px; font-weight: 700; border-top: 1px solid 
   border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px;
 }
 .chip-btn:hover { color: var(--text); border-color: rgba(96,165,250,0.5); }
+
+/* Operating statement (institutional P&L) --------------------------------- */
+.stmt { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.stmt td { padding: 7px 16px; }
+.stmt td.amt { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.stmt td.pct { text-align: right; color: var(--text-faint); font-size: 12px; width: 64px; white-space: nowrap; }
+.stmt tr.sec td { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); font-weight: 700; padding-top: 18px; padding-bottom: 6px; }
+.stmt tr.cat td { font-weight: 600; border-top: 1px solid var(--border); }
+.stmt tr.cat td.amt { font-weight: 700; }
+.stmt tr.line td.name { padding-left: 34px; color: var(--text-dim); }
+.stmt tr.line.z td { color: var(--text-faint); }
+.stmt tr.tot td { font-weight: 700; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); }
+.stmt tr.noi td { font-weight: 800; font-size: 15px; background: rgba(52,211,153,0.07); border-top: 2px solid rgba(52,211,153,0.4); }
+.stmt tr.cf td { font-weight: 800; font-size: 15px; background: rgba(96,165,250,0.07); border-top: 2px solid rgba(96,165,250,0.4); }

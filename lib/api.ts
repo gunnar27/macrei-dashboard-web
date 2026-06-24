@@ -346,3 +346,33 @@ export async function fetchAsk(q: string): Promise<AskResult> {
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
+
+// ── Operating statement (full P&L) ──────────────────────────────────────────
+export type StatementLine = { number: string; name: string; amount: number };
+export type StatementGroup = { number: string; name: string; subtotal: number; lines: StatementLine[] };
+export type OperatingStatement = {
+  property_id: string | null;
+  property_name: string | null;
+  window_months: number;
+  date_from: string;
+  date_to: string;
+  total_income: number;
+  income: StatementGroup[];
+  total_operating_expense: number;
+  operating_expense: StatementGroup[];
+  noi: number;
+  noi_margin: number;
+  debt_service: number;
+  capex: number;
+  depreciation: number;
+  below_line: StatementGroup[];
+  cash_flow: number;
+  synced_at: string | null;
+};
+export async function fetchOperatingStatement(propertyId?: string, months = 12): Promise<OperatingStatement> {
+  const p = new URLSearchParams({ months: String(months) });
+  if (propertyId) p.set("property_id", propertyId);
+  const res = await fetch(`${API_BASE}/api/portfolio/operating-statement?${p.toString()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+  return res.json();
+}
