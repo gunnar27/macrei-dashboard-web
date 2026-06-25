@@ -5,6 +5,14 @@
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8090";
 
+// Shared bearer token for the backend API. SERVER-SIDE ONLY — every fetcher here
+// runs in a server component or route handler, so DASHBOARD_API_TOKEN (no
+// NEXT_PUBLIC_ prefix) never reaches the browser. Empty when unset (local dev).
+function apiHeaders(): Record<string, string> {
+  const t = process.env.DASHBOARD_API_TOKEN;
+  return t ? { Authorization: `Bearer ${t}` } : {};
+}
+
 export type PortfolioSummary = {
   total_units: number;
   occupied_units: number;
@@ -33,7 +41,7 @@ export type BuildingStats = {
 
 export async function fetchPortfolioSummary(): Promise<PortfolioSummary> {
   const res = await fetch(`${API_BASE}/api/portfolio/summary`, {
-    cache: "no-store",
+    cache: "no-store", headers: apiHeaders(),
   });
   if (!res.ok) {
     throw new Error(`API ${res.status}: ${await res.text()}`);
@@ -43,7 +51,7 @@ export async function fetchPortfolioSummary(): Promise<PortfolioSummary> {
 
 export async function fetchBuildings(): Promise<BuildingStats[]> {
   const res = await fetch(`${API_BASE}/api/portfolio/buildings`, {
-    cache: "no-store",
+    cache: "no-store", headers: apiHeaders(),
   });
   if (!res.ok) {
     throw new Error(`API ${res.status}: ${await res.text()}`);
@@ -75,7 +83,7 @@ export type PortfolioFinancials = {
 // Server-side fetch (used by the Next route handler) — keeps creds/CORS server-side.
 export async function fetchFinancials(months = 12): Promise<PortfolioFinancials> {
   const res = await fetch(`${API_BASE}/api/portfolio/financials?months=${months}`, {
-    cache: "no-store",
+    cache: "no-store", headers: apiHeaders(),
   });
   if (!res.ok) {
     throw new Error(`API ${res.status}: ${await res.text()}`);
@@ -105,7 +113,7 @@ export async function fetchFinancialsTrend(
 ): Promise<PortfolioFinancialsTrend> {
   const res = await fetch(
     `${API_BASE}/api/portfolio/financials/trend?months=${months}`,
-    { cache: "no-store" },
+    { cache: "no-store", headers: apiHeaders() },
   );
   if (!res.ok) {
     throw new Error(`API ${res.status}: ${await res.text()}`);
@@ -136,7 +144,7 @@ export async function fetchBuildingFinancials(
 ): Promise<BuildingFinancialsDetail> {
   const res = await fetch(
     `${API_BASE}/api/portfolio/buildings/${encodeURIComponent(propertyId)}/financials?months=${months}`,
-    { cache: "no-store" },
+    { cache: "no-store", headers: apiHeaders() },
   );
   if (!res.ok) {
     throw new Error(`API ${res.status}: ${await res.text()}`);
@@ -182,7 +190,7 @@ function queryString(p: GlQueryParams): string {
 // Flexible GL query — the engine behind the Explore page.
 export async function fetchGlQuery(p: GlQueryParams): Promise<GlQuery> {
   const res = await fetch(`${API_BASE}/api/portfolio/query?${queryString(p)}`, {
-    cache: "no-store",
+    cache: "no-store", headers: apiHeaders(),
   });
   if (!res.ok) {
     throw new Error(`API ${res.status}: ${await res.text()}`);
@@ -235,7 +243,7 @@ export type RentRoll = {
 };
 export async function fetchRentRoll(propertyId?: string): Promise<RentRoll> {
   const q = propertyId ? `?property_id=${encodeURIComponent(propertyId)}` : "";
-  const res = await fetch(`${API_BASE}/api/portfolio/rent-roll${q}`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}/api/portfolio/rent-roll${q}`, { cache: "no-store", headers: apiHeaders() });
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
@@ -260,7 +268,7 @@ export type DelinquencyAging = {
   by_property: PropertyAging[];
 };
 export async function fetchAging(): Promise<DelinquencyAging> {
-  const res = await fetch(`${API_BASE}/api/portfolio/aging`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}/api/portfolio/aging`, { cache: "no-store", headers: apiHeaders() });
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
@@ -285,7 +293,7 @@ export type LeaseExpirations = {
   leases: LeaseExpiration[];
 };
 export async function fetchLeaseExpirations(withinDays = 120): Promise<LeaseExpirations> {
-  const res = await fetch(`${API_BASE}/api/portfolio/lease-expirations?within_days=${withinDays}`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}/api/portfolio/lease-expirations?within_days=${withinDays}`, { cache: "no-store", headers: apiHeaders() });
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
@@ -325,7 +333,7 @@ export type WorkOrders = {
 };
 export async function fetchWorkOrders(propertyId?: string): Promise<WorkOrders> {
   const q = propertyId ? `?property_id=${encodeURIComponent(propertyId)}` : "";
-  const res = await fetch(`${API_BASE}/api/portfolio/work-orders${q}`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}/api/portfolio/work-orders${q}`, { cache: "no-store", headers: apiHeaders() });
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
@@ -342,7 +350,7 @@ export type AskResult = {
   query: GlQuery;
 };
 export async function fetchAsk(q: string): Promise<AskResult> {
-  const res = await fetch(`${API_BASE}/api/portfolio/ask?q=${encodeURIComponent(q)}`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}/api/portfolio/ask?q=${encodeURIComponent(q)}`, { cache: "no-store", headers: apiHeaders() });
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
@@ -372,7 +380,7 @@ export type OperatingStatement = {
 export async function fetchOperatingStatement(propertyId?: string, months = 12): Promise<OperatingStatement> {
   const p = new URLSearchParams({ months: String(months) });
   if (propertyId) p.set("property_id", propertyId);
-  const res = await fetch(`${API_BASE}/api/portfolio/operating-statement?${p.toString()}`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}/api/portfolio/operating-statement?${p.toString()}`, { cache: "no-store", headers: apiHeaders() });
   if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
   return res.json();
 }
